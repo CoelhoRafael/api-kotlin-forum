@@ -25,6 +25,8 @@ class SecurityConfiguration(
     override fun configure(http: HttpSecurity?) {
         http?.csrf()?.disable()?.authorizeRequests()?.
         antMatchers("/topicos")?.hasAuthority("LEITURA_ESCRITA")?.
+        antMatchers(HttpMethod.GET, "/swagger-ui/*")?.permitAll()?.
+        antMatchers(HttpMethod.GET, "/v3/api-docs/**")?.permitAll()?.
         antMatchers(HttpMethod.POST, "/login")?.permitAll()?.anyRequest()?.authenticated()?.and()
         http?.addFilterBefore(
             JWTLoginFilter(authManager = authenticationManager(), jwtUtil = jwtUtil),
